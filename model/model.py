@@ -72,5 +72,42 @@ class Model:
 
         return a
         """
+        #1 networkx
+        '''tree = nx.bfs_tree(self.G, start)
+        return list(tree.nodes)'''
 
-        # TODO
+        #2 iterative
+        visited = []
+        queue = []
+
+        visited.append(start)
+        queue.append(start)
+
+        while queue:
+            node = queue.pop(0)
+
+            for v in self.G.neighbors(node):
+                if v not in visited:
+                    visited.append(v)
+                    queue.append(v)
+
+        return visited
+
+        #3 recursive
+    '''def reachable_dfs(self,start):
+        visited = []
+        self.recursive_dfs(start, visited)
+
+        return visited
+
+    def recursive_dfs(self, n, visited):
+        visited.append(n)
+        for v in self.G.neighbors(n):
+            if v not in visited:
+                self.recursive_dfs(n, visited)'''
+
+
+
+
+
+
