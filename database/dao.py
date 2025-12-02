@@ -33,12 +33,12 @@ class DAO:
         return result
 
     @staticmethod
-    def readConnessione():
+    def readConnessione(year):
         conn = DBConnect.get_connection()
         result = []
         cursor = conn.cursor(dictionary=True)
         query = "SELECT * FROM connessione WHERE ANNO <= %s"
-        cursor.execute(query)
+        cursor.execute(query, (year,))
         for row in cursor:
             connessioni = Connessione(
                 id = row["id"],

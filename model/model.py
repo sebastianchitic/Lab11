@@ -17,10 +17,19 @@ class Model:
         Quindi il grafo avrà solo i nodi che appartengono almeno ad una connessione, non tutti quelli disponibili.
         :param year: anno limite fino al quale selezionare le connessioni da includere.
         """
-        connessioni = DAO.readConnessione()
-        for connessione in connessioni:
-            if connessione["anno"] <= year:
-                self.G.add_edge(connessione["id_rifugio1"], connessione["id_rifugio2"])
+        self.G.clear()
+
+        rifugi = DAO.readRifugio()
+        connessioni = DAO.readConnessione(year)
+
+        self.id_map = {}
+        for r in rifugi:
+            self.id_map[r.id] = r
+
+        for c in connessioni:
+            if c.id_rifugio1 in self.id_map and c.id_rifugio2 in self.id_map:
+                self.G.add_edge(c.id_rifugio1, c.id_rifugio2)
+
 
 
     def get_nodes(self):
@@ -28,7 +37,7 @@ class Model:
         Restituisce la lista dei rifugi presenti nel grafo.
         :return: lista dei rifugi presenti nel grafo.
         """
-        # TODO
+        return self.G.number_of_nodes()
 
     def get_num_neighbors(self, node):
         """
@@ -36,14 +45,14 @@ class Model:
         :param node: un rifugio (cioè un nodo del grafo)
         :return: numero di vicini diretti del nodo indicato
         """
-        # TODO
+        return self.G.neighbors(node)
 
     def get_num_connected_components(self):
         """
         Restituisce il numero di componenti connesse del grafo.
         :return: numero di componenti connesse
         """
-        # TODO
+        return self.G.number_of_edges()
 
     def get_reachable(self, start):
         """
