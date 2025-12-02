@@ -28,7 +28,9 @@ class Model:
 
         for c in connessioni:
             if c.id_rifugio1 in self.id_map and c.id_rifugio2 in self.id_map:
-                self.G.add_edge(c.id_rifugio1, c.id_rifugio2)
+                n1 = self.id_map[c.id_rifugio1]
+                n2 = self.id_map[c.id_rifugio2]
+                self.G.add_edge(n1, n2)
 
 
 
@@ -37,7 +39,7 @@ class Model:
         Restituisce la lista dei rifugi presenti nel grafo.
         :return: lista dei rifugi presenti nel grafo.
         """
-        return self.G.number_of_nodes()
+        return self.G.nodes()
 
     def get_num_neighbors(self, node):
         """
@@ -45,14 +47,14 @@ class Model:
         :param node: un rifugio (cioè un nodo del grafo)
         :return: numero di vicini diretti del nodo indicato
         """
-        return self.G.neighbors(node)
+        return self.G.degree(node)
 
     def get_num_connected_components(self):
         """
         Restituisce il numero di componenti connesse del grafo.
         :return: numero di componenti connesse
         """
-        return self.G.number_of_edges()
+        return nx.number_connected_components(self.G)
 
     def get_reachable(self, start):
         """
