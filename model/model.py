@@ -2,9 +2,13 @@ import networkx as nx
 from database.dao import DAO
 
 
+
 class Model:
     def __init__(self):
         self.G = nx.Graph()
+        self.nodes = None
+        self.edges = None
+
 
     def build_graph(self, year: int):
         """
@@ -13,7 +17,11 @@ class Model:
         Quindi il grafo avrà solo i nodi che appartengono almeno ad una connessione, non tutti quelli disponibili.
         :param year: anno limite fino al quale selezionare le connessioni da includere.
         """
-        # TODO
+        connessioni = DAO.readConnessione()
+        for connessione in connessioni:
+            if connessione["anno"] <= year:
+                self.G.add_edge(connessione["id_rifugio1"], connessione["id_rifugio2"])
+
 
     def get_nodes(self):
         """
